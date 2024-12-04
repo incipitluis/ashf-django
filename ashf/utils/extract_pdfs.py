@@ -1,11 +1,17 @@
 import os
 import PyPDF2
-from django.core.management import setup_environ
-from ashf import settings 
-from ashf.models import PapersContent 
+import django
+import sys
 
-# Configuración de Django (esto es necesario si el script se ejecuta fuera de Django)
-setup_environ(settings)
+# Add the project root directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+# Set up Django environment
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ashf.settings')
+django.setup()
+
+# Now you can import your Django models
+from ashf.models import PapersContent
 
 def extract_text_from_pdf(pdf_path):
     with open(pdf_path, 'rb') as file:
@@ -16,7 +22,7 @@ def extract_text_from_pdf(pdf_path):
         return text
 
 if __name__ == "__main__":
-    directory = "pdfs"
+    directory = os.path.join(os.path.dirname(os.path.dirname(__file__)), "pdfs")
 
     for filename in os.listdir(directory):
         if filename.endswith(".pdf"):
@@ -26,7 +32,7 @@ if __name__ == "__main__":
             try:
                 extracted_text = extract_text_from_pdf(path)
 
-                # Guardar el texto extraído en la base de datos
+                # Save the extracted text to the database
                 papers_content = PapersContent(content=extracted_text)
                 papers_content.save()
 

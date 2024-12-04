@@ -6,10 +6,11 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+import uuid
 
 
 class Articulos(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     autor = models.CharField(max_length=255)
     titulo = models.CharField(max_length=255)
     year = models.TextField()
@@ -23,7 +24,7 @@ class Articulos(models.Model):
 
 
 class Blog(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
     content = models.TextField(blank=True, null=True)
     important_fragment = models.TextField(blank=True, null=True)
@@ -40,7 +41,7 @@ class Blog(models.Model):
 
 
 class PapersContent(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -49,7 +50,7 @@ class PapersContent(models.Model):
 
 
 class Solicitudes(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     revisor = models.CharField(max_length=255)
     articulo = models.CharField(max_length=255)
     year = models.TextField()
